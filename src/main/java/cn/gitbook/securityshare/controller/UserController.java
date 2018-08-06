@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "usesr")
 public class UserController {
 
+
     public JsonObject getUserInfo(){
         //JsonObject.success()
         return null;

@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: spring-security-jwt
+server:
+  port: 8080
+  servlet:
+    path: /api
+jwt:
+  token:
+    secret: secret
+    expiration: 63500
+manage:
+  user:
+    username: admin
+    password: 123456
