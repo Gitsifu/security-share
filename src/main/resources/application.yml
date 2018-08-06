@@ -4,7 +4,7 @@ spring:
 server:
   port: 8080
   servlet:
-    path: /api
+    path: /
 jwt:
   token:
     secret: secret
@@ -13,3 +13,7 @@ manage:
   user:
     username: admin
     password: 123456
+logging:
+  level: debug
+#调试springsecurity 最好开启，可以查看所有的处理流程，生产关闭
+debug: true

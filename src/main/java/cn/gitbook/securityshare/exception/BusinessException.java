@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * 强制业务异常必须提供code码，便于统一维护
  */
-@Data
 public class BusinessException extends RuntimeException {
     private final CodeMsg msg;
     private Object data;
@@ -16,6 +15,18 @@ public class BusinessException extends RuntimeException {
     }
     public BusinessException(CodeMsg msg,Object data){
         this.msg = msg;
+        this.data = data;
+    }
+
+    public CodeMsg getMsg() {
+        return msg;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
         this.data = data;
     }
 }

@@ -27,8 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Value("${server.servlet.path}")
-    private String servletPath;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -64,17 +62,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         HttpMethod.GET,
                         "/",
-                        servletPath+"/*.html",
-                        servletPath+"/favicon.ico",
-                        servletPath+"/**/*.html",
-                        servletPath+"/**/*.css",
-                        servletPath+"/**/*.js",
-                        servletPath+"/webjars/**",
-                        servletPath+"/swagger/**/*.html",
-                        servletPath+"/**/swagger-resources/**",
-                        servletPath+"/configuration/ui",
-                        servletPath+"/v2/**",
-                        servletPath+"/swagger-resources/**"
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/webjars/**",
+                        "/swagger/**/*.html",
+                        "/**/swagger-resources/**",
+                        "/configuration/ui",
+                        "/v2/**",
+                       "/swagger-resources/**"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated();
