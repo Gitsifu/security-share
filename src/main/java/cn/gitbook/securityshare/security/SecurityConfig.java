@@ -5,6 +5,10 @@ import cn.gitbook.securityshare.security.auth.CustomAuthenticationFailureHandler
 import cn.gitbook.securityshare.security.auth.CustomAuthenticationSuccessHandler;
 import cn.gitbook.securityshare.security.auth.password.PasswordAuthenticationProvider;
 import cn.gitbook.securityshare.security.auth.password.PasswordLoginProcessFilter;
+import cn.gitbook.securityshare.security.auth.sms.SmsAuthenticationProvider;
+import cn.gitbook.securityshare.security.auth.sms.SmsLoginProcessFilter;
+import cn.gitbook.securityshare.security.auth.ukey.UkeyAuthenticationProvider;
+import cn.gitbook.securityshare.security.auth.ukey.UkeyLoginProcessFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordAuthenticationProvider passwordAuthenticationProvider;
 
     @Autowired
+    private SmsAuthenticationProvider smsAuthenticationProvider;
+
+    @Autowired
+    private UkeyAuthenticationProvider ukeyAuthenticationProvider;
+
+    @Autowired
     private CustomAuthenticationFailureHandler failureHandler;
 
     @Autowired
@@ -65,6 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth)  throws Exception {
         auth.authenticationProvider(passwordAuthenticationProvider);
         auth.authenticationProvider(jwtAuthenticationProvider);
+        auth.authenticationProvider(smsAuthenticationProvider);
+        auth.authenticationProvider(ukeyAuthenticationProvider);
     }
 
     @Bean
@@ -81,6 +93,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         PasswordLoginProcessFilter passwordLoginProcessFilter = new PasswordLoginProcessFilter(loginUrlProperties.getPassword(),successHandler,failureHandler,objectMapper);
         passwordLoginProcessFilter.setAuthenticationManager(authenticationManager);
         return passwordLoginProcessFilter;
+    }
+
+    public SmsLoginProcessFilter smsLoginProcessFilter(){
+        SmsLoginProcessFilter smsLoginProcessFilter = new SmsLoginProcessFilter(loginUrlProperties.getSms(),successHandler,failureHandler,objectMapper);
+        smsLoginProcessFilter.setAuthenticationManager(authenticationManager);
+        return smsLoginProcessFilter;
+    }
+
+    public UkeyLoginProcessFilter ukeyLoginProcessFilter(){
+        UkeyLoginProcessFilter ukeyLoginProcessFilter = new UkeyLoginProcessFilter(loginUrlProperties.getUkey(),successHandler,failureHandler,objectMapper);
+        ukeyLoginProcessFilter.setAuthenticationManager(authenticationManager);
+        return ukeyLoginProcessFilter;
     }
 
     @Override
@@ -133,6 +157,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .addFilterBefore(new CustomCorsFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(passwordLoginProcessFilter(),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(smsLoginProcessFilter(),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(ukeyLoginProcessFilter(),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.headers().cacheControl();

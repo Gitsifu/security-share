@@ -19,7 +19,7 @@ import java.util.Collections;
 public class UkeyLoginProcessFilter extends BaseLoginProcessFilter {
     private static Logger logger = LoggerFactory.getLogger(UkeyLoginProcessFilter.class);
 
-    protected UkeyLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, ObjectMapper mapper) {
+    public UkeyLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, ObjectMapper mapper) {
         super(defaultFilterProcessesUrl, successHandler, failureHandler,mapper);
     }
 

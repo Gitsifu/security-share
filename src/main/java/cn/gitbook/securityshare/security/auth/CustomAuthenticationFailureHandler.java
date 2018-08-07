@@ -4,6 +4,7 @@ import cn.gitbook.securityshare.constants.CodeMsg;
 import cn.gitbook.securityshare.dto.JsonObject;
 import cn.gitbook.securityshare.exception.IllegalTokenException;
 import cn.gitbook.securityshare.exception.MethodNotSupportException;
+import cn.gitbook.securityshare.exception.UkeyNotSupportException;
 import cn.gitbook.securityshare.exception.UserForceLoginOutException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -50,13 +51,14 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
        }else if(MethodNotSupportException.class.isAssignableFrom(e.getClass())){
             resultVo.setResultCode(CodeMsg.methodNotSupport.getCode());
            resultVo.setMsg(CodeMsg.methodNotSupport.getMsg());
+        }else if(UkeyNotSupportException.class.isAssignableFrom(e.getClass())){
+            resultVo.setResultCode(CodeMsg.ukeyNotSupported.getCode());
+            resultVo.setMsg(CodeMsg.ukeyNotSupported.getMsg());
+        }else {
+            resultVo.setResultCode(CodeMsg.accessDenied.getCode());
+            resultVo.setMsg(CodeMsg.accessDenied.getMsg());
         }
-       else {
-           resultVo.setResultCode(CodeMsg.accessDenied.getCode());
-           resultVo.setMsg(CodeMsg.accessDenied.getMsg());
-       }
-     response.getOutputStream().write(JSON.toJSONBytes(resultVo,SerializerFeature.BrowserCompatible));
-
+        response.getOutputStream().write(JSON.toJSONBytes(resultVo,SerializerFeature.BrowserCompatible));
      //mapper.writeValue(response.getWriter(), resultVo);
     }
 }

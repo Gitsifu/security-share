@@ -26,9 +26,7 @@ public class PasswordLoginProcessFilter extends BaseLoginProcessFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         checkMethod(request);
-        PasswordLoginRequest loginRequest = new PasswordLoginRequest();
-        loginRequest.setUsername(request.getParameter("username"));
-        loginRequest.setPassword(request.getParameter("password"));
+        PasswordLoginRequest loginRequest = getMapper().readValue(request.getReader(),PasswordLoginRequest.class);
         UsernamePasswordToken token = new UsernamePasswordToken(null,loginRequest.getUsername(),loginRequest.getPassword());
         return this.getAuthenticationManager().authenticate(token);
     }

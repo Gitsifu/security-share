@@ -24,6 +24,9 @@ public class OrderController {
     }
 
     @ApiOperation(value = "添加订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token", required = true, dataType = "string", paramType = "header")
+    })
     @PostMapping(value = "add_order")
     public JsonObject<String> addOrder(@RequestBody AddOrderRequest request){
         return JsonObject.success(null);

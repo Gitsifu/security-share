@@ -24,7 +24,7 @@ import java.util.Collections;
 public class SmsLoginProcessFilter extends BaseLoginProcessFilter {
     private static Logger logger = LoggerFactory.getLogger(SmsLoginProcessFilter.class);
 
-    protected SmsLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, ObjectMapper mapper) {
+    public SmsLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, ObjectMapper mapper) {
         super(defaultFilterProcessesUrl, successHandler, failureHandler,mapper);
     }
 

@@ -36,12 +36,7 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException(CodeMsg.passwordIncorrect.getMsg());
         }
         if(user.getPassword().equals(token.getPassword())){
-            List<Role> roleList = userService.getUserRolesById(user.getId());
-            List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
-            if(null != roleList && roleList.size() > 0){
-                roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
-            }
-
+            List<GrantedAuthority> grantedAuthorities = userService.getUserRolesByUserId(user.getId());
             JwtUser sessionInfo = new JwtUser(user.getUsername(),"",grantedAuthorities,true,"");
             return new LoginSuccessToken(grantedAuthorities,sessionInfo);
         }else {

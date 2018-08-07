@@ -15,7 +15,8 @@ public enum CodeMsg {
     methodNotSupport(1000005L,"请求的方法不支持"),
     passwordIncorrect(1000006L,"用户名或者密码错误"),
     accessDenied(1000007L,"没有操作该功能的权限"),
-    paramLack(1000008L,"请求参数有误");
+    ukeyNotSupported(1000008L,"ukey登录需要集成银行环境所以暂不支持"),
+    paramLack(1000009L,"请求参数有误");
     private Long code;
     private String msg;
     CodeMsg(Long code, String msg){
