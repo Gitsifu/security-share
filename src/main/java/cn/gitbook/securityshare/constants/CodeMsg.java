@@ -13,8 +13,9 @@ public enum CodeMsg {
     tokenInvalid(1000003L,"登录已经过期，请重新登录"),
     tokenIllegal(1000004L,"无效令牌"),
     methodNotSupport(1000005L,"请求的方法不支持"),
-    accessDenied(1000006L,"没有操作该功能的权限"),
-    paramLack(1000007L,"请求参数有误");
+    passwordIncorrect(1000006L,"用户名或者密码错误"),
+    accessDenied(1000007L,"没有操作该功能的权限"),
+    paramLack(1000008L,"请求参数有误");
     private Long code;
     private String msg;
     CodeMsg(Long code, String msg){

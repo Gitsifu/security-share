@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "auth")
+@RequestMapping(value = "/api/auth")
 public class AuthController {
     @PostMapping(value = "passLogin")
     @ApiOperation("模拟密码登录")

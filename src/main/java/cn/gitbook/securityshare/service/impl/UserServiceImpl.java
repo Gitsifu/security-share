@@ -19,6 +19,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserByUserName(String username) {
+        if("user1".equals(username)){
+            return User.builder().id(1L).username("user1").password(encoder.encode("123")).build();
+        }else if("user2".equals(username)){
+            return User.builder().id(2L).username("user2").password(encoder.encode("123")).build();
+        }
         return null;
     }
 

@@ -3,8 +3,10 @@ package cn.gitbook.securityshare.dto;
 import cn.gitbook.securityshare.constants.CodeMsg;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class JsonObject<T> {
+public class JsonObject<T> implements Serializable {
     private Long resultCode;
     private String msg;
     private T data;

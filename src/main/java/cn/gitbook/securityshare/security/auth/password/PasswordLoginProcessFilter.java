@@ -1,9 +1,10 @@
 package cn.gitbook.securityshare.security.auth.password;
 
+import cn.gitbook.securityshare.dto.PasswordLoginRequest;
 import cn.gitbook.securityshare.security.auth.BaseLoginProcessFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -17,17 +18,18 @@ import java.io.IOException;
 public class PasswordLoginProcessFilter extends BaseLoginProcessFilter {
     private static Logger logger = LoggerFactory.getLogger(PasswordLoginProcessFilter.class);
 
-    protected PasswordLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
-        super(defaultFilterProcessesUrl, successHandler, failureHandler);
+    public PasswordLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler,ObjectMapper mapper) {
+        super(defaultFilterProcessesUrl, successHandler, failureHandler,mapper);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         checkMethod(request);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,password);
+        PasswordLoginRequest loginRequest = new PasswordLoginRequest();
+        loginRequest.setUsername(request.getParameter("username"));
+        loginRequest.setPassword(request.getParameter("password"));
+        UsernamePasswordToken token = new UsernamePasswordToken(null,loginRequest.getUsername(),loginRequest.getPassword());
         return this.getAuthenticationManager().authenticate(token);
     }
 

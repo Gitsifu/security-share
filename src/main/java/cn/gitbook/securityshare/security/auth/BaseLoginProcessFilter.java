@@ -3,6 +3,8 @@ package cn.gitbook.securityshare.security.auth;
 import cn.gitbook.securityshare.constants.CodeMsg;
 import cn.gitbook.securityshare.exception.MethodNotSupportException;
 import cn.gitbook.securityshare.util.AjaxUitl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -17,14 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Data
 public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProcessingFilter {
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
+    private final ObjectMapper mapper;
     protected BaseLoginProcessFilter(String defaultFilterProcessesUrl,AuthenticationSuccessHandler successHandler,
-                                     AuthenticationFailureHandler failureHandler) {
+                                     AuthenticationFailureHandler failureHandler,ObjectMapper mapper) {
         super(defaultFilterProcessesUrl);
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
+        this.mapper = mapper;
     }
 
 
@@ -42,7 +47,7 @@ public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProce
     }
 
     public void checkMethod(HttpServletRequest request){
-        if (!HttpMethod.POST.name().equals(request.getMethod()) || !AjaxUitl.isAjax(request)) {
+        if (!HttpMethod.POST.name().equals(request.getMethod())) {
             throw new MethodNotSupportException(CodeMsg.methodNotSupport.getMsg());
         }
     }

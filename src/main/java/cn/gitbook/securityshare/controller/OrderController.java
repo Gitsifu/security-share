@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = "v1/order")
+@RequestMapping(value = "/api/v1/order")
 @RestController
 public class OrderController {
 
