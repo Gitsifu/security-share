@@ -1,11 +1,13 @@
 package cn.gitbook.securityshare.controller;
 
+import cn.gitbook.securityshare.constants.CodeMsg;
 import cn.gitbook.securityshare.dto.AddOrderRequest;
 import cn.gitbook.securityshare.dto.JsonObject;
 import cn.gitbook.securityshare.dto.OrderVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "/api/v1/order")
@@ -27,9 +29,20 @@ public class OrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token", required = true, dataType = "string", paramType = "header")
     })
+    @Secured("ROLE_ADD_ORDER")
     @PostMapping(value = "add_order")
     public JsonObject<String> addOrder(@RequestBody AddOrderRequest request){
         return JsonObject.success(null);
+    }
+
+
+    @ApiOperation(value = "更新订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token", required = true, dataType = "string", paramType = "header")
+    })
+    @Secured("ROLE_UPDATE_ORDER")
+    @PostMapping JsonObject<String> updateOrder(){
+        return JsonObject.success(CodeMsg.sucess.getMsg());
     }
 
 }

@@ -38,6 +38,7 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
         if(user.getPassword().equals(token.getPassword())){
             List<GrantedAuthority> grantedAuthorities = userService.getUserRolesByUserId(user.getId());
             JwtUser sessionInfo = new JwtUser(user.getUsername(),"",grantedAuthorities,true,"");
+            //此处将权限放入Authentication 中是为了在成功处理器中能拿到权限信息，实际项目中可以在成功处理器中，将用户的信息存入Redis，提高系统性能
             return new LoginSuccessToken(grantedAuthorities,sessionInfo);
         }else {
             throw new AuthenticationServiceException(CodeMsg.passwordIncorrect.getMsg());

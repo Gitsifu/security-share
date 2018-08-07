@@ -7,7 +7,7 @@ server:
     path: /
 jwt:
   token:
-    secret: secret
+    secret: 12ji7nsjev68926jdsmio666wjslff
     expiration: 63500
 manage:
   user:

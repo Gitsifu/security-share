@@ -39,14 +39,21 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    /**
+     *
+     * 模拟用户权限查询  用户1具有 更新订单的权限
+     * 用户2 具体添加订单的权限
+     * @param id
+     * @return
+     */
     @Override
     public List<Role> getUserRolesById(Long id) {
         List<Role> list = Lists.newArrayList();
         if(1L == id){
-            list.add(Role.builder().role("query_order").build());
+            list.add(Role.builder().role("ROLE_UPDATE_ORDER").build());
             return list;
         }else if(2L == id){
-            list.add(Role.builder().role("").build());
+            list.add(Role.builder().role("ROLE_ADD_ORDER").build());
             return list;
         }
         return Collections.emptyList();
@@ -65,7 +72,7 @@ public class UserServiceImpl implements IUserService {
        List<Role> roleList =  getUserRolesById(id);
         List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
         if(null != roleList && roleList.size() > 0){
-            roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
+            grantedAuthorities = roleList.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
         }
         return grantedAuthorities;
     }

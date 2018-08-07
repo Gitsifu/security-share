@@ -6,10 +6,12 @@ import cn.gitbook.securityshare.exception.IllegalTokenException;
 import cn.gitbook.securityshare.exception.MethodNotSupportException;
 import cn.gitbook.securityshare.exception.UkeyNotSupportException;
 import cn.gitbook.securityshare.exception.UserForceLoginOutException;
+import cn.gitbook.securityshare.util.HandleHttpErrorUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -32,33 +34,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException e) throws IOException, ServletException {
-
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);//设置http 返回请求错误码
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        JsonObject<String> resultVo = new JsonObject<>();
-        resultVo.setData("");
-        if(IllegalTokenException.class.isAssignableFrom(e.getClass())){
-            resultVo.setResultCode(CodeMsg.accessDenied.getCode());
-            resultVo.setMsg(CodeMsg.accessDenied.getMsg());
-            //如果有单点登录的处理，需要在此处定制返回的错误信息，单点登录页属于认证出现了业务异常
-        }else if(BadCredentialsException.class.isAssignableFrom(e.getClass())){
-            resultVo.setResultCode(CodeMsg.passwordIncorrect.getCode());
-            resultVo.setMsg(CodeMsg.passwordIncorrect.getMsg());
+        try{
+            HandleHttpErrorUtil.handleHttpError(request,response,e);
+        }catch (Exception throwable){
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
         }
-        else if(UserForceLoginOutException.class.isAssignableFrom(e.getClass())){
-            resultVo.setResultCode(CodeMsg.forceLoginOut.getCode());
-            resultVo.setMsg(CodeMsg.forceLoginOut.getMsg());
-       }else if(MethodNotSupportException.class.isAssignableFrom(e.getClass())){
-            resultVo.setResultCode(CodeMsg.methodNotSupport.getCode());
-           resultVo.setMsg(CodeMsg.methodNotSupport.getMsg());
-        }else if(UkeyNotSupportException.class.isAssignableFrom(e.getClass())){
-            resultVo.setResultCode(CodeMsg.ukeyNotSupported.getCode());
-            resultVo.setMsg(CodeMsg.ukeyNotSupported.getMsg());
-        }else {
-            resultVo.setResultCode(CodeMsg.accessDenied.getCode());
-            resultVo.setMsg(CodeMsg.accessDenied.getMsg());
-        }
-        response.getOutputStream().write(JSON.toJSONBytes(resultVo,SerializerFeature.BrowserCompatible));
      //mapper.writeValue(response.getWriter(), resultVo);
     }
 }

@@ -1,5 +1,6 @@
 package cn.gitbook.securityshare.security;
 
+import cn.gitbook.securityshare.util.HandleHttpErrorUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -19,6 +20,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException e) throws IOException {
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        //response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        try{
+            HandleHttpErrorUtil.handleHttpError(request,response,e);
+        }catch (Exception throwable){
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+        }
     }
 }

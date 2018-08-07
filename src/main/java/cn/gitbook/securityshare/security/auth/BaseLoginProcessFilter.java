@@ -2,7 +2,6 @@ package cn.gitbook.securityshare.security.auth;
 
 import cn.gitbook.securityshare.constants.CodeMsg;
 import cn.gitbook.securityshare.exception.MethodNotSupportException;
-import cn.gitbook.securityshare.util.AjaxUitl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.http.HttpMethod;
